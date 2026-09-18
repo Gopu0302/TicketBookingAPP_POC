@@ -2,19 +2,19 @@
   "inputs": [
     {
       "type": "promptString",
-      "id": "github_mcp_pat",
-      "description": "GitHub Personal Access Token (fine-grained, scoped to anilltm/redbus)",
+      "id": "github_mcp_pat_2",
+      "description": "GitHub Personal Access Token (fine-grained, scoped to anilltm/redbus) \u2014 paste only the raw token, no \"Bearer\" prefix",
       "password": true
     },
     {
       "type": "promptString",
-      "id": "atlassian_email",
-      "description": "Atlassian account email (ltm-team-gyetami4.atlassian.net)"
+      "id": "atlassian_email_2",
+      "description": "Atlassian account email (ltm-team-gyetami4.atlassian.net) \u2014 required, do not leave blank"
     },
     {
       "type": "promptString",
-      "id": "atlassian_api_token",
-      "description": "Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens)",
+      "id": "atlassian_api_token_2",
+      "description": "Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens) \u2014 required, do not leave blank",
       "password": true
     }
   ],
@@ -23,7 +23,7 @@
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/",
       "headers": {
-        "Authorization": "Bearer ${input:github_mcp_pat}"
+        "Authorization": "Bearer ${input:github_mcp_pat_2}"
       }
     },
     "atlassian": {
@@ -31,12 +31,13 @@
       "command": "${userHome}/.local/bin/uvx.exe",
       "args": ["mcp-atlassian"],
       "env": {
+        "UV_SYSTEM_CERTS": "1",
         "JIRA_URL": "https://ltm-team-gyetami4.atlassian.net",
-        "JIRA_USERNAME": "${input:atlassian_email}",
-        "JIRA_API_TOKEN": "${input:atlassian_api_token}",
+        "JIRA_USERNAME": "${input:atlassian_email_2}",
+        "JIRA_API_TOKEN": "${input:atlassian_api_token_2}",
         "CONFLUENCE_URL": "https://ltm-team-gyetami4.atlassian.net/wiki",
-        "CONFLUENCE_USERNAME": "${input:atlassian_email}",
-        "CONFLUENCE_API_TOKEN": "${input:atlassian_api_token}"
+        "CONFLUENCE_USERNAME": "${input:atlassian_email_2}",
+        "CONFLUENCE_API_TOKEN": "${input:atlassian_api_token_2}"
       }
     }
   }

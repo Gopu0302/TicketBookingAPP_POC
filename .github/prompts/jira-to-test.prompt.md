@@ -1,12 +1,37 @@
 ---
-mode: agent
-description: Turn a Jira user story into Playwright tests and open a PR
+agent: agent
+description: Read a Jira user story and generate Playwright automation test scripts following this repo's conventions
 ---
-Given a Jira issue key (ask for it if not provided):
+You are generating Playwright automation tests for redbus.in from a Jira user story.
 
-1. Fetch the issue via the `atlassian` MCP server (summary, description, acceptance criteria). Pull linked Confluence pages if referenced.
-2. Derive a concise list of test cases covering the acceptance criteria (happy path + key edge cases).
-3. Create a branch named `<ISSUE-KEY>-<short-slug>` off `main`.
-4. Implement/extend Playwright specs under `tests/`, reusing/extending Page Object Model classes in `pages/` and data in `test-data/`. Keep changes scoped to what the story requires.
-5. Run `npx playwright test` and fix failures before proceeding.
-6. Commit with a message referencing the issue key, push the branch, and open a PR via the `github` MCP server against `anilltm/redbus`, with the issue key in the title and a summary of test cases in the description.
+## Input
+Ask for a Jira issue key if one wasn't provided (e.g. `PROJ-123`).
+
+## Steps
+
+1. **Fetch the story** via the `atlassian` MCP server: get the issue's summary, description, and
+   acceptance criteria. Follow any linked Confluence pages for extra detail.
+2. **Derive test cases**: turn each acceptance criterion into one concrete test case (happy path +
+   the meaningful edge/negative cases). List the test cases briefly before writing code.
+3. **Implement following these repo guidelines**:
+   - One spec file per feature/story: `tests/<feature>.spec.ts`, using a `test.describe()` block
+     named after the story.
+   - Never put raw selectors or `page.goto(...)` calls directly in spec files — add/extend methods
+     on Page Object Model classes in `pages/` (e.g. `HomePage`, `SearchResultsPage`). Specs only call
+     page-object methods and assert on their return values.
+   - Import `test`/`expect` from `../fixtures/pages` (not `@playwright/test` directly) so page
+     objects are injected as fixtures. Add new page objects to `fixtures/pages.ts` if you create one.
+   - Reuse/extend data in `test-data/` (e.g. `routes.ts`) instead of hardcoding cities, dates, or
+     fares inline in specs.
+   - Rely on `baseURL` from `playwright.config.ts` — use relative paths (`/`, `/search`) in
+     `page.goto()`, never hardcode `https://www.redbus.in`.
+   - Match the existing comment style: one short line explaining *why*, only where the code isn't
+     self-explanatory (see `HomePage.ts` for examples). Don't add docstrings or restate the code.
+4. **Run `npx playwright test`** and fix failures before finishing. If a locator is flaky or
+   redBus's bot-protection blocks it, prefer the `chromium` project (`channel: chrome`), already
+   configured as the default in `playwright.config.ts`.
+5. **Summarize**: list the test cases implemented and the Playwright test run result.
+
+## Optional follow-up (only if explicitly asked)
+Create a branch `<ISSUE-KEY>-<short-slug>` off `main`, commit referencing the issue key, push, and
+open a PR via the `github` MCP server against `anilltm/redbus` summarizing the test cases added.

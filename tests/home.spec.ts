@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/pages';
+import { test } from '../fixtures/pages';
 
 test.describe('redBus homepage', () => {
   test('loads with the bus search widget visible', async ({ homePage }) => {
