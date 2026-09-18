@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_mcp_pat",
+      "description": "GitHub Personal Access Token (fine-grained, scoped to anilltm/redbus)",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "atlassian_email",
+      "description": "Atlassian account email (ltm-team-gyetami4.atlassian.net)"
+    },
+    {
+      "type": "promptString",
+      "id": "atlassian_api_token",
+      "description": "Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens)",
+      "password": true
+    }
+  ],
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${input:github_mcp_pat}"
+      }
+    },
+    "atlassian": {
+      "type": "stdio",
+      "command": "${userHome}/.local/bin/uvx.exe",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://ltm-team-gyetami4.atlassian.net",
+        "JIRA_USERNAME": "${input:atlassian_email}",
+        "JIRA_API_TOKEN": "${input:atlassian_api_token}",
+        "CONFLUENCE_URL": "https://ltm-team-gyetami4.atlassian.net/wiki",
+        "CONFLUENCE_USERNAME": "${input:atlassian_email}",
+        "CONFLUENCE_API_TOKEN": "${input:atlassian_api_token}"
+      }
+    }
+  }
+}
