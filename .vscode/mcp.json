@@ -8,13 +8,13 @@
     },
     {
       "type": "promptString",
-      "id": "atlassian_email_2",
-      "description": "Atlassian account email (ltm-team-gyetami4.atlassian.net) \u2014 required, do not leave blank"
+      "id": "atlassian_username",
+      "description": "Atlassian username/email (ltm-team-gyetami4.atlassian.net) - required, do not leave blank"
     },
     {
       "type": "promptString",
-      "id": "atlassian_api_token_2",
-      "description": "Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens) \u2014 required, do not leave blank",
+      "id": "atlassian_api_key",
+      "description": "Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens) - required, do not leave blank",
       "password": true
     }
   ],
@@ -33,11 +33,11 @@
       "env": {
         "UV_SYSTEM_CERTS": "1",
         "JIRA_URL": "https://ltm-team-gyetami4.atlassian.net",
-        "JIRA_USERNAME": "${input:atlassian_email_2}",
-        "JIRA_API_TOKEN": "${input:atlassian_api_token_2}",
+        "JIRA_USERNAME": "${input:atlassian_username}",
+        "JIRA_API_TOKEN": "${input:atlassian_api_key}",
         "CONFLUENCE_URL": "https://ltm-team-gyetami4.atlassian.net/wiki",
-        "CONFLUENCE_USERNAME": "${input:atlassian_email_2}",
-        "CONFLUENCE_API_TOKEN": "${input:atlassian_api_token_2}"
+        "CONFLUENCE_USERNAME": "${input:atlassian_username}",
+        "CONFLUENCE_API_TOKEN": "${input:atlassian_api_key}"
       }
     }
   }
